@@ -368,7 +368,10 @@
     loopChart: function ($chart) {
       var that = this;
       var $tr = $chart.find('tr:first');
-      var subObj = { 'id': $tr.find('.node')[0].id };
+	  var thenode = $tr.find('.node')
+      var subObj = { 'id': thenode[0].id,
+					'category': thenode.data('nodeData')['name'],	 // added
+					'lex': thenode.data('nodeData')['title']};	// added
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
         subObj.children.push(that.loopChart($(this)));
