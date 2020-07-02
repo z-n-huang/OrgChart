@@ -149,7 +149,7 @@
 .orgchart .lines .downLine {
   background-color: rgba(217, 83, 79, 0.8);
   margin: 0 auto;
-  height: 20px;
+  height: 10px; /*20px*/
   width: 2px;
   float: none;
 }
@@ -160,8 +160,8 @@
   display: inline-block;
   position: relative;
   margin: 0;
-  padding: 3px;
-  border: 2px dashed transparent;
+  padding: 1px;
+  border: 0px dashed transparent;
   text-align: center;
 }
 
@@ -214,17 +214,17 @@
 
 .orgchart .node .title {
   box-sizing: border-box;
-  padding: 2px;
-  width: 130px;
+  padding: 0px;
+  /*width: 130px;*/ min-width: 50px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: bold;
-  height: 20px;
+  height: 15px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: rgba(217, 83, 79, 0.8);
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #000;
   border-radius: 4px 4px 0 0; 
 }
 
@@ -262,8 +262,8 @@
   box-sizing: border-box;
   padding: 2px;
   height: 20px;
-  font-size: 0.625rem;
-  border: 1px solid rgba(217, 83, 79, 0.8);
+  font-size: 1rem;
+  border: 0px solid rgba(217, 83, 79, 0.8);
   border-radius: 0 0 4px 4px;
   text-align: center;
   background-color: #fff;

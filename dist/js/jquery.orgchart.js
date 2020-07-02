@@ -369,7 +369,7 @@
       var that = this;
       var $tr = $chart.find('tr:first');
 	  var thenode = $tr.find('.node')
-      var subObj = { 'id': thenode[0].id,
+      var subObj = { //'id': thenode[0].id, // removed
 					'category': thenode.data('nodeData')['name'],	 // added
 					'lex': thenode.data('nodeData')['title']};	// added
       $tr.siblings(':last').children().each(function() {
@@ -1227,11 +1227,14 @@
       // construct the content of node
       var $nodeDiv = $('<div' + (opts.draggable ? ' draggable="true"' : '') + (data[opts.nodeId] ? ' id="' + data[opts.nodeId] + '"' : '') + (data.parentId ? ' data-parent="' + data.parentId + '"' : '') + '>')
         .addClass('node ' + (data.className || '') +  (level > opts.visibleLevel ? ' slide-up' : ''));
+	  var optsID = data[opts.nodeId]; // NH added; need to draw lines
       if (opts.nodeTemplate) {
         $nodeDiv.append(opts.nodeTemplate(data));
       } else {
-        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>')
-          .append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : '');
+        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>') // NH: This adds the name box; get bottom center coordinate by id: https://stackoverflow.com/questions/1104295/jquery-use-canvas-to-draw-lines-between-divs?rq=1
+		// NH: This adds the title box If terminal node... 
+        //.append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : ''); 
+		.append(data[opts.nodeContent] != '***' ? '<div class="content">' + (data[opts.nodeContent] ) + '</div>' : ''); 
       }
       //
       var nodeData = $.extend({}, data);
@@ -1253,8 +1256,10 @@
             '<i class="edge horizontalEdge leftEdge oci"></i>');
         }
         if(Number(flags.substr(2,1))) {
-          $nodeDiv.append('<i class="edge verticalEdge bottomEdge oci"></i>')
-            .children('.title').prepend('<i class="oci '+ opts.parentNodeSymbol + ' symbol"></i>');
+          //$nodeDiv.append('<i class="edge verticalEdge bottomEdge oci"></i>')
+            //.children('.title').prepend('<i class="oci '+ opts.parentNodeSymbol + ' symbol"></i>');
+		  $nodeDiv.append('<i class="edge verticalEdge bottomEdge oci"></i>')
+            .children('.title').prepend('<i class="oci '+ ' symbol"></i>');
         }
       }
 
@@ -1318,7 +1323,9 @@
             $appendTo.append($nodesLayer);
           }
         } else {
-          var $upperLines = $('<tr class="lines' + isHidden + '"><td colspan="' + childrenData.length * 2 + '"><div class="downLine"></div></td></tr>');
+		 
+		
+		  var $upperLines = $('<tr class="lines' + isHidden + '"><td colspan="' + childrenData.length * 2 + '"><div class="downLine"></div></td></tr>');
           var lowerLines = '<tr class="lines' + isHidden + '"><td class="rightLine"></td>';
           for (var i=1; i<childrenData.length; i++) {
             lowerLines += '<td class="leftLine topLine"></td><td class="rightLine topLine"></td>';
@@ -1340,6 +1347,13 @@
         });
       }
     },
+	// NH: draw lines
+	/*var my_canvas=$('#my_canvas').get(0)*/
+	/*var gctx = $chartContainer.getContext("2d");
+	gctx.beginPath();
+	gctx.moveTo(20,30);
+	gctx.lineTo(100,100);
+	gctx.stroke(); */
     // build the child nodes of specific node
     buildChildNode: function ($appendTo, data) {
       $appendTo.find('td:first').attr('colspan', data.length * 2);
