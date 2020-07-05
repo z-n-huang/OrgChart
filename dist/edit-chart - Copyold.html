@@ -99,6 +99,7 @@ Bracket notation here:
       <input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Root</label>
       <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
       <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
+	  <input type="radio" name="node-type" id="edit-label" value="edit-label"><label for="edit-label">Edit label</label>
     </span>
     <button type="button" id="btn-add-nodes">Add</button>
     <button type="button" id="btn-delete-nodes">Delete</button>
@@ -116,6 +117,7 @@ Bracket notation here:
 	
 	$('#gen-tree').on('click', function() {
 		$('#chart-container').html('');
+		$('#hierarchy-str').html('');
 		function tree2array(tree) {
 			var n_children = tree.length;
 			var tree_dict = {};
@@ -168,7 +170,30 @@ Bracket notation here:
 	$('#btn-export-hier').on('click', function() {
       //if (!$('pre').length) {
 		//$('#btn-export-hier').after('<pre>').next() = "";
-        var hierarchy = oc.getHierarchy();
+        /* //var hierarchy = oc.getHierarchy(); //oc.getHierarchy();
+		var oc = $('#chart-container').orgchart({
+		  'data' : datascource,
+		  'chartClass': 'edit-state',
+		  'exportButton': true,
+		  'exportFilename': 'SportsChart',
+		  'createNode': function($node, data) {
+			$node[0].id = getId();
+			$node.name = data.name;
+			$node.title = data.title;
+			
+			},
+		  'nodeContent': 'title',
+		  'draggable': true,
+		  'dropCriteria': function($draggedNode, $dragZone, $dropZone) {
+			if($draggedNode.find('.content').text().indexOf('manager') > -1 && $dropZone.find('.content').text().indexOf('engineer') > -1) {
+			  return false;
+			}
+			return true;
+		  }
+		  
+		}); */
+		console.log(oc);
+		var hierarchy = oc.getHierarchy();
 		$('#hierarchy-str').html('');
         //$('#btn-export-hier').after('<pre>').next().append(JSON.stringify(hierarchy, null, 2));
 		var string = JSON.stringify(hierarchy, null, 2);
@@ -303,7 +328,11 @@ Bracket notation here:
         } else {
           oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'title': '***', 'id': getId() });
         }
-      } else if (nodeType.val() === 'siblings') {
+      } else if (nodeType.val() === 'edit-label') { // NH added
+		    oc.editLabel($node, nodeVals.map(function (item) {
+			return item;
+		}));
+	  } else if (nodeType.val() === 'siblings') {
         if ($node[0].id === oc.$chart.find('.node:first')[0].id) {
           alert('You are not allowed to directly add sibling nodes to root node');
           return;
@@ -314,7 +343,6 @@ Bracket notation here:
       } else {
         var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
         if (!hasChild) {
-          //var rel = nodeVals.length > 1 ? '110' : '100'; // NH: original
 		  var rel = nodeVals.length > 1 ? '110' : '100'; // NH: original
           oc.addChildren($node, nodeVals.map(function (item) {
               return { 'name': item, 'title': nodeValsName[0], 'relationship': rel, 'id': getId() };

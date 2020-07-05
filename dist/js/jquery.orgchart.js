@@ -394,7 +394,7 @@
             }
           });
           if (!valid) {
-            return 'Error: All nodes of orghcart to be exported must have data-id attribute!';
+            return 'Error: All nodes of orgchart to be exported must have data-id attribute!';
           }
         }
       }
@@ -1231,7 +1231,7 @@
       if (opts.nodeTemplate) {
         $nodeDiv.append(opts.nodeTemplate(data));
       } else {
-        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>') // NH: This adds the name box; get bottom center coordinate by id: https://stackoverflow.com/questions/1104295/jquery-use-canvas-to-draw-lines-between-divs?rq=1
+        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>') // NH: This adds the name box; get bottom center coordinate by id: https://stackoverflow.com/questions/1104295/jquery-use-canvas-to-draw-lines-between-divs?rq=1; was originally a div
 		// NH: This adds the title box If terminal node... 
         //.append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : ''); 
 		.append(data[opts.nodeContent] != '***' ? '<div class="content">' + (data[opts.nodeContent] ) + '</div>' : ''); 
@@ -1347,13 +1347,6 @@
         });
       }
     },
-	// NH: draw lines
-	/*var my_canvas=$('#my_canvas').get(0)*/
-	/*var gctx = $chartContainer.getContext("2d");
-	gctx.beginPath();
-	gctx.moveTo(20,30);
-	gctx.lineTo(100,100);
-	gctx.stroke(); */
     // build the child nodes of specific node
     buildChildNode: function ($appendTo, data) {
       $appendTo.find('td:first').attr('colspan', data.length * 2);
@@ -1371,6 +1364,11 @@
       if (this.isInAction($node)) {
         this.switchVerticalArrow($node.children('.bottomEdge'));
       }
+    },
+	editLabel: function ($node, titleStr) { // NH added function
+	  console.log(33333,  $node.find(".title"));
+	  $node.find(".title").html(titleStr); // This changes the label but not the contents of the structure
+	  
     },
     // build the parent node of specific node
     buildParentNode: function ($currentRoot, data) {
@@ -1419,7 +1417,7 @@
         } else {
           this.complementLine($siblingTds.eq(insertPostion).after($nodeChart.closest('td').unwrap()), siblingCount, 1);
         }
-      } else { // build the sibling nodes and parent node for the specific ndoe
+      } else { // build the sibling nodes and parent node for the specific node
         this.buildHierarchy($nodeChart.closest('.orgchart'), data);
         this.complementLine($nodeChart.next().children('tr:last').children().eq(insertPostion).after($('<td colspan="2">').append($nodeChart)),
           siblingCount, 1);
