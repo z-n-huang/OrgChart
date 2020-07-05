@@ -123,6 +123,7 @@ Bracket notation here:
 	  d = d.replace(/(\{)(\w+)(\s*)(\{)/g, '$1"name": "$2"$3, "title": "***", "children": [ $4'); // for ROOT
 	  d = d.replace(/(\{)(S)(\s*)(\{)/g, '$1"name": "$2"$3, "title": "***", "children": [ $4'); // for S
 	  d = d.replace(/(\{)([\.\,\?\!\\\/]+)(\s*)([\.\,\?\!\\\/]+)/g, '$1"name": "$2",$3"title": "$4", '); // punctuation
+	  d = d.replace(/(\{)(\w+)(\s*)(\{)/g, '$1"name": "$2",$3 "children": [ $4'); // for constituents with labels and words
 	  d = d.replace(/(\})(\s*)(\{)/g, "$1, $2$3"); // add commas between } and {
 	  d = d.replace(/(\})(\})/g, "$1 ] $2"); // add back square brackets
 	  d = d.replace(/(\})(\})/g, "$1 ] $2"); 
