@@ -368,10 +368,12 @@
     loopChart: function ($chart) {
       var that = this;
       var $tr = $chart.find('tr:first');
-	  var thenode = $tr.find('.node')
-      var subObj = { //'id': thenode[0].id, // removed
-					'category': thenode.data('nodeData')['name'],	 // added
-					'lex': thenode.data('nodeData')['title']};	// added
+	  var thenode = $tr.find('.node');
+	  console.log(8888, thenode);  // NH debug
+      var subObj = {//'id': $tr.find('.node')[0].id // removed
+					'category': thenode[0].children[0].innerText, // added
+					'lex': thenode[0].children[1].innerText  // added
+					};	
       $tr.siblings(':last').children().each(function() {
         if (!subObj.children) { subObj.children = []; }
         subObj.children.push(that.loopChart($(this)));
@@ -1367,7 +1369,7 @@
     },
 	editLabel: function ($node, titleStr) { // NH added function
 	  console.log(33333,  $node.find(".title"));
-	  $node.find(".title").html(titleStr); // This changes the label but not the contents of the structure
+	  $node.children(".title").html(titleStr);
 	  
     },
     // build the parent node of specific node

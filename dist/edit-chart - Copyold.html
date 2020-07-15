@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Organization Chart Plugin</title>
-  <link rel="icon" href="img/logo.png">
+  <title>Phrase structure tree editor</title>
+  <!-- link rel="icon" href="img/logo.png"-->
   <link rel="stylesheet" href="css/jquery.orgchart.css">
   <link rel="stylesheet" href="css/style.css">
   <style type="text/css">
@@ -82,10 +82,10 @@ Bracket notation here:
   
   <div id= "chart-container"></div>
   <div id= "edit-panel">
-    <span id="chart-state-panel" class="radio-panel">
+    <!--span id="chart-state-panel" class="radio-panel">
       <input type="radio" name="chart-state" id="rd-view" value="view"><label for="rd-view">View</label>
       <input type="radio" name="chart-state" id="rd-edit" value="edit" checked="true"><label for="rd-edit">Edit</label>
-    </span>
+    </span-->
     <label class="selected-node-group">Selected node:</label>
     <input type="text" id="selected-node" class="selected-node-group" size = 10>
     <label>New node:</label>
@@ -93,17 +93,17 @@ Bracket notation here:
       <li><input type="text" class="new-node" size = 10></li>
 	  <li><input type="text" class="new-node-name" size = 10></li>
     </ul>
-    <i class="oci oci-plus-circle btn-inputs" id="btn-add-input"></i>
-    <i class="oci oci-minus-circle btn-inputs" id="btn-remove-input"></i>
+    <!--i class="oci oci-plus-circle btn-inputs" id="btn-add-input"></i>
+    <i class="oci oci-minus-circle btn-inputs" id="btn-remove-input"></i-->
     <span id="node-type-panel" class="radio-panel">
-      <input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Root</label>
-      <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Child</label>
-      <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Sibling</label>
+      <!--input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Root</label-->
+      <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Add child</label>
+      <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Add sibling</label>
 	  <input type="radio" name="node-type" id="edit-label" value="edit-label"><label for="edit-label">Edit label</label>
     </span>
-    <button type="button" id="btn-add-nodes">Add</button>
+    <button type="button" id="btn-add-nodes">Update</button>
     <button type="button" id="btn-delete-nodes">Delete</button>
-    <button type="button" id="btn-reset">Reset</button>
+    <!--button type="button" id="btn-reset">Reset</button-->
 	<button type="button" id="btn-export-hier">Get bracketed form</button>
 	<br />
 	<textarea id = "hierarchy-str" rows="20" cols="50"></textarea>
@@ -118,36 +118,40 @@ Bracket notation here:
 	$('#gen-tree').on('click', function() {
 		$('#chart-container').html('');
 		$('#hierarchy-str').html('');
+
 		function tree2array(tree) {
 			var n_children = tree.length;
 			var tree_dict = {};
 			var children = [];
 			var i;
 			for (i = 0; i < n_children; i++) {
-				console.log(n_children, i, tree[i]);
+				//console.log(n_children, i, tree[i]);
 				if (i == 0) {
 					tree_dict["name"] = tree[0];
 				}
 				else {
 					var tt = tree[i];
 					if (Array.isArray(tree[i])) {
-						console.log(tree[i][0]);
+						//console.log(tree[i][0]);
 						tree_dict["title"] = "***";
 						var child = tree2array(tt);
 						children.push(child);
 					} else {
 						tree_dict["title"] = tt;
 					}
-					console.log(333, tree_dict);
+					//console.log(333, tree_dict);
 				}
 				if (children.length > 0) {
 					tree_dict["children"] = children;
 				}
 			}
-		return tree_dict;
+			return tree_dict;
 		};
-
-	  var d = $('#brackets-input').val();
+	  var d = "";
+	  var oc = "";
+	  var hierarchy = "";
+	  
+	  d = $('#brackets-input').val();
 	  d = d.replace(/\(/g, "[").replace(/\)/g, "],")
 	  d = d.replace(/(\w+\$*)/g, '"$1", ')
 	  d = d.replace(/(\[)([\.\,\?\!\\\/]+)(\s*)([\.\,\?\!\\\/]+)/g, '$1 "$2",$3 "$4", '); // punctuation
@@ -192,8 +196,9 @@ Bracket notation here:
 		  }
 		  
 		}); */
-		console.log(oc);
+		//console.log(oc);
 		var hierarchy = oc.getHierarchy();
+		
 		$('#hierarchy-str').html('');
         //$('#btn-export-hier').after('<pre>').next().append(JSON.stringify(hierarchy, null, 2));
 		var string = JSON.stringify(hierarchy, null, 2);
@@ -216,7 +221,7 @@ Bracket notation here:
     var oc = $('#chart-container').orgchart({
       'data' : datascource,
       'chartClass': 'edit-state',
-      'exportButton': true,
+      'exportButton': false,
       'exportFilename': 'SportsChart',
       'createNode': function($node, data) {
         $node[0].id = getId();
@@ -234,7 +239,7 @@ Bracket notation here:
       }
       
     });
-
+	
     oc.$chartContainer.on('click', '.node', function() {
       var $this = $(this);
       $('#selected-node').val($this.find('.title').text()).data('node', $this);
@@ -303,15 +308,15 @@ Bracket notation here:
       }
       var nodeType = $('input[name="node-type"]:checked');
       if (!nodeType.length) {
-        alert('Please select a node type');
+        alert('Please specify what kind of edit you want');
         return;
       }
       if (nodeType.val() !== 'parent' && !$('.orgchart').length) {
-        alert('Please create the root node firstly when you want to build up the orgchart from the scratch'); // NH: fixed typo
+        alert('Please create the root node first when you want to build the tree from scratch'); // NH: fixed typo
         return;
       }
       if (nodeType.val() !== 'parent' && !$node) {
-        alert('Please select one node in orgchart');
+        alert('Please select a node');
         return;
       }
       if (nodeType.val() === 'parent') {
@@ -328,7 +333,7 @@ Bracket notation here:
         } else {
           oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'title': '***', 'id': getId() });
         }
-      } else if (nodeType.val() === 'edit-label') { // NH added
+      } else if (nodeType.val() === 'edit-label') { // NH added edit label
 		    oc.editLabel($node, nodeVals.map(function (item) {
 			return item;
 		}));
