@@ -18,14 +18,14 @@
 	  font-family: sans-serif;
 	  font-size: 14px;
       position: relative;
-      left: 10px;
-      width: calc(100% - 40px);
+      /*left: 10px;*/
+      /*width: calc(100%);*/
       border-radius: 4px;
       float: left;
       margin-top: 10px;
       padding: 10px;
       color: #000;
-      background-color: #fff;
+      /*background-color: #fff;*/
     }
     #edit-panel .btn-inputs::before {
       background-color: #fff;
@@ -85,46 +85,9 @@
   
 </head>
 <body>
+
   
-  <!--div id= "chart-container"></div-->
-  <div id= "edit-panel">
-  
-	<label>Input:</label>
-	<textarea id="brackets-input" name="brackets-input" rows="4" cols="20" style = "vertical-align: top;"></textarea>
-	<button type="button" id="gen-tree">Display tree</button>
-    <!--span id="chart-state-panel" class="radio-panel">
-      <input type="radio" name="chart-state" id="rd-view" value="view"><label for="rd-view">View</label>
-      <input type="radio" name="chart-state" id="rd-edit" value="edit" checked="true"><label for="rd-edit">Edit</label>
-    </span-->
-	&nbsp;&nbsp;
-    <label class="selected-node-group">Selected node:</label>
-    <input type="text" id="selected-node" class="selected-node-group" size = 6>
-    <label>New node:</label>
-    <ul id="new-nodelist">
-      <li><input type="text" id = "gen-new-node" class="new-node" size = 6></li>
-	  <li><input type="text" id = "gen-new-node-content" class="new-node-name" size = 6></li>
-    </ul>
-    <!--i class="oci oci-plus-circle btn-inputs" id="btn-add-input"></i>
-    <i class="oci oci-minus-circle btn-inputs" id="btn-remove-input"></i-->
-    <span id="node-type-panel" class="radio-panel">
-      <!--input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Root</label-->
-      <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Add child</label>
-      <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Add sibling</label>
-	  <input type="radio" name="node-type" id="edit-label" value="edit-label"><label for="edit-label">Edit label</label>
-    </span>
-    <button type="button" id="btn-add-nodes">Update</button>
-    <button type="button" id="btn-delete-nodes">Delete</button>
-    <!--button type="button" id="btn-reset">Reset</button-->
-	
-	<br />
-	<div id = "testoutput" />
-  </div>
-
-<div id= "outputTab" class = "tabcontent"></div>
-
-
-
-
+<!-- div id = "testoutput" / -->
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Tree</a></li>
@@ -132,36 +95,80 @@
 		<li><a href="#tabs-help">Help</a></li>
 		<li><a href="#tabs-license">License, etc.</a></li>
 	</ul>
-	<div id="tabs-1"><div id= "chart-container"></div></div>
-	<div id="tabs-export"><button type="button" id="btn-export">Generate</button><br /><textarea id = "hierarchy-str" rows="20" cols="50"></textarea></div>
-	<div id="tabs-help">
-	<h2></h2>
-	<ol>
-	<li>Enter Penn Treebank-style trees (round brackets/parentheses, not square brackets) in the Input box.
-	<li>Click "Display tree" button to view tree.
-	<li>To re-attach a node: click on it and then drag and drop it to the desired parent node.
-	<li>To re-order nodes within a tree: 
-	<ol><li>Click on a node that is not on the right edge.
-	<li>Drag and drop it to its parent, as if re-attaching it. This moves the node to the right edge. 
-	<li>Repeat as necessary.
-	</ol>
-	<li>To change a non-terminal node label: 
-	<ol><li>Click on the node (the "Selected node" box should be updated). 
-	<li>Type in the corrected label in the top box of "New node" (feel free to leave the bottom box blank).
-	<li>Select "Edit label".
-	<li>Click "Update" button.
-	</ol>
-	<li>To add a child or sibling to a node:
-	<ol><li>Click on the node (the "Selected node" box should be updated). 
-	<li>Type in the label and string in the top box of "New node". Feel free to leave the bottom box blank if it's a non-terminal node.
-	<li>Select "Add child" or "Add sibling".
-	<li>Click "Update" button. The new node will appear on the right edge.
-	</ol>
-	
-	<li>To view the revised bracketed version of the tree: click on "Bracketed form" tab, and then click "Generate".
-	</ol>
+	<div id="tabs-1">
+		<div><!-- NH removed id= "edit-panel"-->
+	    <!-- NH removed-->
+		<!--span id="chart-state-panel" class="radio-panel">
+		  <input type="radio" name="chart-state" id="rd-view" value="view"><label for="rd-view">View</label>
+		  <input type="radio" name="chart-state" id="rd-edit" value="edit" checked="true"><label for="rd-edit">Edit</label>
+		</span-->
+		<label>Input:</label>
+			<textarea id="brackets-input" name="brackets-input" rows="3" cols="20" style = "vertical-align: top;"></textarea>
+			<button type="button" id="gen-tree">Display tree</button>
+		<!-- NH: make "selected node" invisible. -->
+		<label class="selected-node-group" style="display: none">Selected node:</label>
+			<input type="text" id="selected-node" class="selected-node-group" size = 6 style="display: none">
+		&nbsp;&nbsp;<label>New node:</label>
+			<ul id="new-nodelist">
+			  <li><input type="text" id = "gen-new-node" class="new-node" size = 6></li>
+			  <li><input type="text" id = "gen-new-node-content" class="new-node-name" size = 6></li>
+			</ul>
+		<!-- NH removed -->
+		<!--i class="oci oci-plus-circle btn-inputs" id="btn-add-input"></i>
+		<i class="oci oci-minus-circle btn-inputs" id="btn-remove-input"></i-->
+		<span id="node-type-panel" class="radio-panel">
+		  <!-- NH removed -->
+		  <!--input type="radio" name="node-type" id="rd-parent" value="parent"><label for="rd-parent">Root</label-->
+		  <input type="radio" name="node-type" id="rd-child" value="children"><label for="rd-child">Add as child</label>
+		  <input type="radio" name="node-type" id="rd-sibling" value="siblings"><label for="rd-sibling">Add as sibling</label>
+		  <input type="radio" name="node-type" id="edit-label" value="edit-label"><label for="edit-label">Edit label</label>
+		</span>
+		<button type="button" id="btn-add-nodes">Update</button>&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" id="btn-delete-nodes" style = "background-color: #d88">Delete node</button>
+		<!-- NH removed --><!--button type="button" id="btn-reset">Reset</button-->
+		
+		<br />
+		
+		</div>
+		<div id= "chart-container"></div>
+	</div>	
+	<div id="tabs-export">
+		<button type="button" id="btn-export">Generate</button><br />
+		<textarea id = "hierarchy-str" rows="20" cols="50"></textarea>
 	</div>
-	<div id="tabs-license"><h2>Phrase Structure Tree Editor</h2><p>Based on <a href="https://github.com/dabeng/OrgChart" target = "_blank">OrgChart</a> by <a href = "https://github.com/dabeng" target = "_blank">dabeng</a>, originally released under the MIT License. <p>Modified work (c) 2020-present z-n-huang. All substantial changes can be identified by "NH" or "NH:" in comments.</p></div>
+	<div id="tabs-help">
+		<h2>General</h2>
+			<ol>
+			<li>Enter Penn Treebank-style trees (round brackets/parentheses, not square brackets) in the Input box.
+			<li>Click "Display tree" button to view tree.
+			<li>Make edits to the tree.
+			<li>To view the revised bracketed version of the tree, click on "Bracketed form" tab, and then click "Generate".
+			</ol>
+		
+		<h2>How to edit a tree</h2>
+			<ol>
+			<li>To re-attach a node: click on it and then drag and drop it to the desired parent node.
+			<li>To re-order nodes within a tree: 
+			<ol><li>Click on a node that is not on the right edge.
+			<li>Drag and drop it to its parent, as if re-attaching it. This moves the node to the right edge. 
+			<li>Repeat as necessary.
+			</ol>
+			<li>To change a non-terminal node label: 
+			<ol><li>Click on the node (the node should be highlighted in yellow). 
+			<li>Type in the corrected label in the top box of "New node" (feel free to leave the bottom box blank).
+			<li>Select "Edit label".
+			<li>Click "Update" button.
+			</ol>
+			<li>To add a child or sibling to a node:
+			<ol><li>Click on the node. 
+			<li>Type in the label and string in the top box of "New node". Feel free to leave the bottom box blank if it's a non-terminal node.
+			<li>Select "Add child" or "Add sibling".
+			<li>Click "Update" button. The new node will appear on the right edge.
+			</ol>
+	</div>
+	<div id="tabs-license">
+		<h2>Phrase Structure Tree Editor</h2><p>Based on <a href="https://github.com/dabeng/OrgChart" target = "_blank">OrgChart</a> by <a href = "https://github.com/dabeng" target = "_blank">dabeng</a>, originally released under the MIT License. <p>Modified work (c) 2020-present z-n-huang. All substantial changes can be identified by "NH" or "NH:" in comments.</p>
+	</div>
 </div>
 
   <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -175,7 +182,7 @@
 		$('#chart-container').html('');
 		$('#hierarchy-str').html('');
 
-		// Converts a tree in the form of a JS array into a JS dictionary
+		// NH added: Converts a tree in the form of a JS array into a JS dictionary
 		function tree2dict(tree) {
 			var n_children = tree.length;
 			var tree_dict = {};
@@ -205,7 +212,7 @@
 	  var oc = "";
 	  var hierarchy = "";
 	  
-	  // Converts tree in round brackets/parentheses format into a JS array
+	  // NH added: Converts tree in round brackets/parentheses format into a JS array
 	  d = $('#brackets-input').val();
 	  d = d.replace(/\n$/, "") // remove trailing \n
 	  d = d.replace(/\(/g, "[").replace(/\)/g, "],")
@@ -215,9 +222,9 @@
 	  //d = d.replace(/\n/g, " ").trim(); // removes trailing spaces (and leading ones)
 	  d = d.substring(0, d.length -1); // changes last "]," to "]"
 	  		
-	  var tree = JSON.parse(d); // generate a dictionary
+	  var tree = JSON.parse(d); // NH added: generate a dictionary
 	  
-	  var datascource = tree2dict(tree);
+	  var datascource = tree2dict(tree); // NH added: transform dictionary to JSON format
 
     
 	$('#btn-export').on('click', function() {
