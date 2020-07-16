@@ -4,14 +4,19 @@
   <meta charset="utf-8">
   <title>Phrase structure tree editor</title>
   <!-- link rel="icon" href="img/logo.png"-->
+  <!-- Start tabs -->
+  <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.css">
+  <!-- end tabs -->
   <link rel="stylesheet" href="css/jquery.orgchart.css">
   <link rel="stylesheet" href="css/style.css">
   <style type="text/css">
-    #chart-container { background-color: #eee; /*height: 500px; */ }
+    #chart-container { background-color: #fff; /*height: 500px; */ }
     .orgchart { background: #fff; }
     .orgchart.edit-state .edge { display: none; }
     .orgchart .node .title { height: 30px; line-height: 30px; }
     #edit-panel {
+	  font-family: sans-serif;
+	  font-size: 14px;
       position: relative;
       left: 10px;
       width: calc(100% - 40px);
@@ -19,8 +24,8 @@
       float: left;
       margin-top: 10px;
       padding: 10px;
-      color: #fff;
-      background-color: #449d44;
+      color: #000;
+      background-color: #fff;
     }
     #edit-panel .btn-inputs::before {
       background-color: #fff;
@@ -71,27 +76,33 @@
       vertical-align: text-top;
     }
     #new-nodelist>* { padding-bottom: 4px; }
-    .radio-panel input[type='radio'] { display: inline-block;height: 24px;width: 24px;vertical-align: top; }
+    .radio-panel input[type='radio'] { display: inline-block;height: 24px;width: 20px;vertical-align: top; }
     #edit-panel.view-state .radio-panel input[type='radio']+label { vertical-align: -webkit-baseline-middle; }
     #btn-add-nodes { margin-left: 20px; }
+	
   </style>
+  <!-- for tabs-->
+  
 </head>
 <body>
-Bracket notation here:
-  <textarea id="brackets-input" name="brackets-input" rows="4" cols="30"></textarea><button type="button" id="gen-tree">Generate tree</button>
   
-  <div id= "chart-container"></div>
+  <!--div id= "chart-container"></div-->
   <div id= "edit-panel">
+  
+	<label>Input:</label>
+	<textarea id="brackets-input" name="brackets-input" rows="4" cols="20" style = "vertical-align: top;"></textarea>
+	<button type="button" id="gen-tree">Display tree</button>
     <!--span id="chart-state-panel" class="radio-panel">
       <input type="radio" name="chart-state" id="rd-view" value="view"><label for="rd-view">View</label>
       <input type="radio" name="chart-state" id="rd-edit" value="edit" checked="true"><label for="rd-edit">Edit</label>
     </span-->
+	&nbsp;&nbsp;
     <label class="selected-node-group">Selected node:</label>
-    <input type="text" id="selected-node" class="selected-node-group" size = 10>
+    <input type="text" id="selected-node" class="selected-node-group" size = 6>
     <label>New node:</label>
     <ul id="new-nodelist">
-      <li><input type="text" class="new-node" size = 10></li>
-	  <li><input type="text" class="new-node-name" size = 10></li>
+      <li><input type="text" id = "gen-new-node" class="new-node" size = 6></li>
+	  <li><input type="text" id = "gen-new-node-content" class="new-node-name" size = 6></li>
     </ul>
     <!--i class="oci oci-plus-circle btn-inputs" id="btn-add-input"></i>
     <i class="oci oci-minus-circle btn-inputs" id="btn-remove-input"></i-->
@@ -104,14 +115,59 @@ Bracket notation here:
     <button type="button" id="btn-add-nodes">Update</button>
     <button type="button" id="btn-delete-nodes">Delete</button>
     <!--button type="button" id="btn-reset">Reset</button-->
-	<button type="button" id="btn-export-hier">Get bracketed form</button>
+	
 	<br />
-	<textarea id = "hierarchy-str" rows="20" cols="50"></textarea>
 	<div id = "testoutput" />
   </div>
+
+<div id= "outputTab" class = "tabcontent"></div>
+
+
+
+
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">Tree</a></li>
+		<li><a href="#tabs-export">Bracketed form</a></li>
+		<li><a href="#tabs-help">Help</a></li>
+		<li><a href="#tabs-license">License, etc.</a></li>
+	</ul>
+	<div id="tabs-1"><div id= "chart-container"></div></div>
+	<div id="tabs-export"><button type="button" id="btn-export">Generate</button><br /><textarea id = "hierarchy-str" rows="20" cols="50"></textarea></div>
+	<div id="tabs-help">
+	<h2></h2>
+	<ol>
+	<li>Enter Penn Treebank-style trees (round brackets/parentheses, not square brackets) in the Input box.
+	<li>Click "Display tree" button to view tree.
+	<li>To re-attach a node: click on it and then drag and drop it to the desired parent node.
+	<li>To re-order nodes within a tree: 
+	<ol><li>Click on a node that is not on the right edge.
+	<li>Drag and drop it to its parent, as if re-attaching it. This moves the node to the right edge. 
+	<li>Repeat as necessary.
+	</ol>
+	<li>To change a non-terminal node label: 
+	<ol><li>Click on the node (the "Selected node" box should be updated). 
+	<li>Type in the corrected label in the top box of "New node" (feel free to leave the bottom box blank).
+	<li>Select "Edit label".
+	<li>Click "Update" button.
+	</ol>
+	<li>To add a child or sibling to a node:
+	<ol><li>Click on the node (the "Selected node" box should be updated). 
+	<li>Type in the label and string in the top box of "New node". Feel free to leave the bottom box blank if it's a non-terminal node.
+	<li>Select "Add child" or "Add sibling".
+	<li>Click "Update" button. The new node will appear on the right edge.
+	</ol>
+	
+	<li>To view the revised bracketed version of the tree: click on "Bracketed form" tab, and then click "Generate".
+	</ol>
+	</div>
+	<div id="tabs-license"><h2>Phrase Structure Tree Editor</h2><p>Based on <a href="https://github.com/dabeng/OrgChart" target = "_blank">OrgChart</a> by <a href = "https://github.com/dabeng" target = "_blank">dabeng</a>, originally released under the MIT License. <p>Modified work (c) 2020-present z-n-huang. All substantial changes can be identified by "NH" or "NH:" in comments.</p></div>
+</div>
+
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/html2canvas.min.js"></script>
   <script type="text/javascript" src="js/jquery.orgchart.js"></script>
+
   <script type="text/javascript">
 
 	
@@ -119,27 +175,25 @@ Bracket notation here:
 		$('#chart-container').html('');
 		$('#hierarchy-str').html('');
 
-		function tree2array(tree) {
+		// Converts a tree in the form of a JS array into a JS dictionary
+		function tree2dict(tree) {
 			var n_children = tree.length;
 			var tree_dict = {};
 			var children = [];
 			var i;
 			for (i = 0; i < n_children; i++) {
-				//console.log(n_children, i, tree[i]);
 				if (i == 0) {
 					tree_dict["name"] = tree[0];
 				}
 				else {
 					var tt = tree[i];
 					if (Array.isArray(tree[i])) {
-						//console.log(tree[i][0]);
-						tree_dict["title"] = "***";
-						var child = tree2array(tt);
+						tree_dict["title"] = undefined;
+						var child = tree2dict(tt);
 						children.push(child);
 					} else {
 						tree_dict["title"] = tt;
 					}
-					//console.log(333, tree_dict);
 				}
 				if (children.length > 0) {
 					tree_dict["children"] = children;
@@ -151,56 +205,26 @@ Bracket notation here:
 	  var oc = "";
 	  var hierarchy = "";
 	  
+	  // Converts tree in round brackets/parentheses format into a JS array
 	  d = $('#brackets-input').val();
+	  d = d.replace(/\n$/, "") // remove trailing \n
 	  d = d.replace(/\(/g, "[").replace(/\)/g, "],")
 	  d = d.replace(/(\w+\$*)/g, '"$1", ')
 	  d = d.replace(/(\[)([\.\,\?\!\\\/]+)(\s*)([\.\,\?\!\\\/]+)/g, '$1 "$2",$3 "$4", '); // punctuation
 	  d = d.replace(/\, \]/g, "]").replace(/(\]\,\])/g, "]]").replace(/(\]\,\])/g, "]]");
 	  //d = d.replace(/\n/g, " ").trim(); // removes trailing spaces (and leading ones)
 	  d = d.substring(0, d.length -1); // changes last "]," to "]"
-	  //$('#hierarchy-str').after('<pre>').next().append("aaaa");
-	  //$('#testoutput').after('<pre>').next().append("aaaa"+ d);
+	  		
+	  var tree = JSON.parse(d); // generate a dictionary
 	  
-		
-	  var tree = JSON.parse(d); // gets an array of arrays
-	  
-	  var datascource = tree2array(tree);
-	
-	  //$('#testoutput').after('<pre>').next().append("aaaa"+ JSON.stringify(JSON.parse(d), null, 2));
-	  //datascource = JSON.parse(d);
-	  //$('#hierarchy-str').after('<pre>').next().append(JSON.stringify(datascource, null, 2)); //datascource, null, 2 hierarchy-str
-   
+	  var datascource = tree2dict(tree);
+
     
-	$('#btn-export-hier').on('click', function() {
-      //if (!$('pre').length) {
-		//$('#btn-export-hier').after('<pre>').next() = "";
-        /* //var hierarchy = oc.getHierarchy(); //oc.getHierarchy();
-		var oc = $('#chart-container').orgchart({
-		  'data' : datascource,
-		  'chartClass': 'edit-state',
-		  'exportButton': true,
-		  'exportFilename': 'SportsChart',
-		  'createNode': function($node, data) {
-			$node[0].id = getId();
-			$node.name = data.name;
-			$node.title = data.title;
-			
-			},
-		  'nodeContent': 'title',
-		  'draggable': true,
-		  'dropCriteria': function($draggedNode, $dragZone, $dropZone) {
-			if($draggedNode.find('.content').text().indexOf('manager') > -1 && $dropZone.find('.content').text().indexOf('engineer') > -1) {
-			  return false;
-			}
-			return true;
-		  }
-		  
-		}); */
-		//console.log(oc);
+	$('#btn-export').on('click', function() {
+      
 		var hierarchy = oc.getHierarchy();
 		
 		$('#hierarchy-str').html('');
-        //$('#btn-export-hier').after('<pre>').next().append(JSON.stringify(hierarchy, null, 2));
 		var string = JSON.stringify(hierarchy, null, 2);
 		string = string.replace(/\{/g, "\(").replace(/\}/g, "\)").replace(/\]\n/g, ""); // replace braces with parentheses
 		string = string.replace(/\"lex\": \"\*\*\*\",\n/g, '').replace(/\"category\": \"/g, '').replace(/\"children\": \[\n/g, '');
@@ -279,7 +303,7 @@ Bracket notation here:
 
     $('#btn-remove-input').on('click', function() {
       var inputs = $('#new-nodelist').children('li');
-      if (inputs.length > 2) { // oringal = length > 1
+      if (inputs.length > 2) { // original = length > 1
         inputs.last().remove();
       }
     });
@@ -331,7 +355,7 @@ Bracket notation here:
           });
           oc.$chart.addClass('view-state');
         } else {
-          oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'title': '***', 'id': getId() });
+          oc.addParent($chartContainer.find('.node:first'), { 'name': nodeVals[0], 'title': '', 'id': getId() });
         }
       } else if (nodeType.val() === 'edit-label') { // NH added edit label
 		    oc.editLabel($node, nodeVals.map(function (item) {
@@ -348,8 +372,9 @@ Bracket notation here:
       } else {
         var hasChild = $node.parent().attr('colspan') > 0 ? true : false;
         if (!hasChild) {
-		  var rel = nodeVals.length > 1 ? '110' : '100'; // NH: original
+		  var rel = nodeVals.length > 1 ? '110' : '100';
           oc.addChildren($node, nodeVals.map(function (item) {
+			console.log(nodeValsName);
               return { 'name': item, 'title': nodeValsName[0], 'relationship': rel, 'id': getId() };
             }));
         } else {
@@ -386,48 +411,25 @@ Bracket notation here:
   
   
   </script>
-  </body>
   
-  <!--
-  <!DOCTYPE html>
-<html>
-<body>
-
-<h2>JavaScript Regular Expressions</h2>
-<p>Click the button to do a case-insensitive search for "w3schools" in a string.</p>
-
-<button onclick="myFunction()">Try it</button>
-
-<p id="demo"></p>
-
+  
+<!-- start Tabs -->
+<!--script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script-->
+<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script>
-function myFunction() {
-  var str = "(ROOT\
-  (S\
-    (NP (PRP I))\
-    (VP (VBD was)\
-      (VP (VBN born)\
-        (PP (IN in)\
-          (NP (CD 1958)))))\
-    (. .)))";
-  str = str.replace(/(\(((\w+|S)))([ ]*\()/g, '$1 *** "children": (');
-  /*var nonterminal = /(\(\w+)( )(\()/g;
-  //str = str.replace(nonterminal, '$1$2*** "children": [$3');
-  */
-  str = str.replace(/\(/g, "{")
-  str = str.replace(/\)/g, "}")
-  //var lex = /( )(\w+|\*\*\*)/g;
-  var lab = /((\w+|S))( )/g;
-  //var result = str.match(lab);
-  //var str   = 'asd-0.testing';
-  
-  //str = str.replace(lex, '"title": "$2", ');
-  str = str.replace(lab, '"name": "$1", ');
-  document.getElementById("demo").innerHTML = str;
-}
-</script>
+$( "#tabs" ).tabs();
 
-</body>
-</html>
--->
+$( function() {
+    var availableTags = [
+      "VP", "NP", "ADVP", "SFP", "CC", "VB", "NN", 
+	  
+    ];
+    $( "#gen-new-node" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+<!-- end Tabs -->
+  </body>
+
 </html>

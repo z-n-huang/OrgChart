@@ -1233,10 +1233,10 @@
       if (opts.nodeTemplate) {
         $nodeDiv.append(opts.nodeTemplate(data));
       } else {
-        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>') // NH: This adds the name box; get bottom center coordinate by id: https://stackoverflow.com/questions/1104295/jquery-use-canvas-to-draw-lines-between-divs?rq=1; was originally a div
-		// NH: This adds the title box If terminal node... 
+        $nodeDiv.append('<div class="title">' + data[opts.nodeTitle] + '</div>') // NH: This adds the category/title
+		// NH: This adds the terminal node/content box
         //.append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (data[opts.nodeContent] || '') + '</div>' : ''); 
-		.append(data[opts.nodeContent] != '***' ? '<div class="content">' + (data[opts.nodeContent] ) + '</div>' : ''); 
+		.append(data[opts.nodeContent] !== undefined ? '<div class="content">' + (data[opts.nodeContent] ) + '</div>' : ''); 
       }
       //
       var nodeData = $.extend({}, data);
